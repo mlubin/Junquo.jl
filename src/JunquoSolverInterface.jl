@@ -1,17 +1,31 @@
-export JunquoSolver
+#############################################################################
+# Junquo
+# (Ju)lia
+# (n)onconvex 
+# (qu)adratically constrained quadratic program 
+# (o)ptimizer
+# 
+# A (mixed-integer) nonconvex quadratically constrained quadratic 
+# program (QCQP) solver. http://github.com/IainNZ/Junquo.jl
+#############################################################################
 
+# The model type used internally by JuMP
 type JunquoMathProgModel <: AbstractMathProgModel
     inner::JunquoModel
 end
-function JunquoMathProgModel(;options...)
-    return JunquoMathProgModel(JunquoModel())
-end
+JunquoMathProgModel(;options...) = return JunquoMathProgModel(JunquoModel())
 
+# The solver the user can select when building a model in JuMP
+export JunquoSolver
 immutable JunquoSolver <: AbstractMathProgSolver
     options
 end
 JunquoSolver(;kwargs...) = JunquoSolver(kwargs)
 
+
+#############################################################################
+# BEGIN MATHPROGBASE INTERFACE
+#############################################################################
 
 model(s::JunquoSolver) = JunquoMathProgModel(;s.options...)
 
@@ -39,17 +53,8 @@ function addquadconstr!(m::JunquoMathProgModel, linearidx, linearval,
                                         sense, rhs))
 end
 
-function optimize!(m::JunquoMathProgModel)
-    solveJunquo(m.inner)
-end
-
-function status(m::JunquoMathProgModel)
-    return :Optimal
-end
-
+optimize!(m::JunquoMathProgModel) = solveJunquo(m.inner)
+status(m::JunquoMathProgModel) = :Optimal
 getobjval(m::JunquoMathProgModel) = m.inner.objval
-
-function getsolution(m::JunquoMathProgModel)
-    return m.inner.sol
-end
+getsolution(m::JunquoMathProgModel) = m.inner.sol
     

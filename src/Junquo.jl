@@ -2,7 +2,7 @@
 # Junquo
 # (Ju)lia
 # (n)onconvex 
-# (qu)adratically constrained adratic program 
+# (qu)adratically constrained quadratic program 
 # (o)ptimizer
 # 
 # A (mixed-integer) nonconvex quadratically constrained quadratic 

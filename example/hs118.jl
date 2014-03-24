@@ -1,7 +1,7 @@
 using JuMP
-using MIQCQP
+using Junquo
 
-m = Model(solver=MIQCQPSolver())
+m = Model(solver=JunquoSolver())
 
 L = zeros(15)
 L[1] =  8.0

@@ -47,7 +47,7 @@ end
 
 
 
-function solveRelax(data::MIQCQPModel, collb, colub)
+function solveRelax(data::JunquoModel, collb, colub)
     num_var = length(collb)
     m = Model(solver=GurobiSolver(OutputFlag=0))
     @defVar(m, collb[i] <= x[i=1:num_var] <= colub[i])
@@ -160,7 +160,7 @@ function solveRelax(data::MIQCQPModel, collb, colub)
 end
 
 
-function solveMIQCQP(data::MIQCQPModel)
+function solveJunquo(data::JunquoModel)
     srand(10)
     const ERR_TOL = 1e-5
     const GAP_TOL = 0.001
@@ -343,7 +343,7 @@ function solveMIQCQP(data::MIQCQPModel)
 end
 
 
-function buildNLP(data::MIQCQPModel)
+function buildNLP(data::JunquoModel)
     num_var = length(data.collb)
     nlp = Model()
     @defVar(nlp, data.collb[i] <= x[i=1:num_var] <= data.colub[i])
@@ -415,8 +415,8 @@ function buildNLP(data::MIQCQPModel)
     return nlp
 end
 
-function solveNLP(nlp::Model, data::MIQCQPModel, start_x::Vector{Float64})
-#function solveNLP(m, data::MIQCQPModel, start_x::Vector{Float64})
+function solveNLP(nlp::Model, data::JunquoModel, start_x::Vector{Float64})
+#function solveNLP(m, data::JunquoModel, start_x::Vector{Float64})
 
 
     for j = 1:length(start_x)

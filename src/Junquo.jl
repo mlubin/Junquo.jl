@@ -1,10 +1,22 @@
-module MIQCQP
+#############################################################################
+# Junquo
+# (Ju)lia
+# (n)onconvex 
+# (qu)adratically constrained adratic program 
+# (o)ptimizer
+# 
+# A (mixed-integer) nonconvex quadratically constrained quadratic 
+# program (QCQP) solver. http://github.com/IainNZ/Junquo.jl
+#############################################################################
 
-    # Standard interface
+module Junquo
+
+    # Mathprogbase interface machinery
     require(joinpath(Pkg.dir("MathProgBase"),"src","MathProgSolverInterface.jl"))
     importall MathProgSolverInterface
 
-    type MIQCQPModel    
+
+    type JunquoModel    
         A
         collb
         colub
@@ -23,7 +35,7 @@ module MIQCQP
         sol
         objval
     end
-    MIQCQPModel() = MIQCQPModel(nothing,nothing,nothing,nothing,
+    JunquoModel() = JunquoModel(nothing,nothing,nothing,nothing,
                                 nothing,nothing,nothing,
                                 nothing,nothing,nothing,
                                 Any[],nothing,0.0)
@@ -42,5 +54,5 @@ module MIQCQP
     include("solver.jl")
 
 
-    include("MIQCQPSolverInterface.jl")
+    include("JunquoSolverInterface.jl")
 end

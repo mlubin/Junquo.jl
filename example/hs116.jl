@@ -1,7 +1,7 @@
 using JuMP
-using MIQCQP
+using Junquo
 
-m = Model(solver=MIQCQPSolver())
+m = Model(solver=JunquoSolver())
 
 N = 13
 a = 0.002

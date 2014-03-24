@@ -1,7 +1,7 @@
 using JuMP
-using MIQCQP
+using Junquo
 
-m = Model(solver=MIQCQPSolver())
+m = Model(solver=JunquoSolver())
 @defVar(m, 0 <= x1 <= 1)
 @defVar(m, 0 <= x2 <= 1)
 @defVar(m, 0 <= x3 <= 1)

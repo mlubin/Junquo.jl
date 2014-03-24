@@ -1,0 +1,43 @@
+using JuMP
+using MIQCQP
+
+m = Model(solver=MIQCQPSolver())
+
+N = 13
+a = 0.002
+b = 1.262626
+c = 1.231059
+d = 0.03475
+e = 0.975
+f = 0.00975
+
+lower = [0.1, 0.1, 0.1, 0.0001, 0.1, 0.1, 0.1, 0.1, 500, 0.1, 1.0, 0.0001, 0.0001, 0.0, 0.0, 0.0]
+upper = [1.0, 1.0, 1.0, 0.1, 0.9, 0.9, 1000, 1000, 1000, 500, 150, 150, 150, Inf, Inf, Inf]
+
+@defVar(m, lower[i] <= x[i=1:N] <= upper[i])
+@setObjective(m, Min, x[11] + x[12] + x[13])
+
+addConstraint(m, x[3] - x[2] >= 0)
+addConstraint(m, x[2] - x[1] >= 0)
+addConstraint(m, 1 - a * x[7] + a * x[8] >= 0)
+addConstraint(m, x[11] + x[12] + x[13] >= 50)
+addConstraint(m, x[11] + x[12] + x[13] <= 250)
+
+addConstraint(m, x[13] - b * x[10] + c * x[3] * x[10] >= 0)
+addConstraint(m, x[5] - d * x[2] - e * x[2] * x[5] + f * x[2]^2 >= 0)
+addConstraint(m, x[6] - d * x[3] - e * x[3] * x[6] + f * x[3]^2 >= 0)
+addConstraint(m, x[4] - d * x[1] - e * x[1] * x[4] + f * x[1]^2 >= 0)
+addConstraint(m, x[12] - b * x[9] + c * x[2] * x[9] >= 0)
+addConstraint(m, x[11] - b * x[8] + c * x[1] * x[8] >= 0)
+addConstraint(m, x[5] * x[7] - x[1] * x[8] - x[4] * x[7] + x[4] * x[8] >= 0)
+addConstraint(m, 1 - a * (x[2] * x[9] + x[5] * x[8] - x[1] * x[8] - x[6] * x[9]) -
+          x[5] - x[6] >= 0)
+addConstraint(m, x[2] * x[9] - x[3] * x[10] - x[6] * x[9] - 500 * x[2] +
+          500 * x[6] + x[2] * x[10] >= 0)
+addConstraint(m, x[2] - 0.9 - a * (x[2] * x[10] - x[3] * x[10]) >= 0)
+
+
+@time solve(m)
+@time solve(m)
+
+println(getObjectiveValue(m), " z")
